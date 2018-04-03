@@ -1,0 +1,20 @@
+{
+    "name": "mafanding/sftp-sync",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mafanding",
+            "email": "admin@mafanding.top"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SftpSync\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0.28",
+        "composer/composer": "^1.6"
+    }
+}

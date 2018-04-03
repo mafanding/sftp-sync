@@ -1,5 +1,9 @@
 <?php
 
+require_once "vendor/autoload.php";
+
+\SftpSync\SftpSync::run();
+/**
 $sftp_sync = SftpSync::getInstance();
 $sftp_sync->sync();
 
@@ -133,3 +137,4 @@ class SftpSync
     }
 
 }
+**/
