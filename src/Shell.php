@@ -16,17 +16,24 @@ class Shell implements ShellInterface
 
     protected $allowCommands;
 
+    protected $code;
+
+    protected $output;
+
+    protected $flag;
+
     public function __construct(CommandsInterface $commmands = null)
     {
         $this->allowCommands = $commmands ?? new Commands;
         $this->histroyCommands = [];
         $this->currentCommand = "";
+        $this->reset();
     }
 
     public function run()
     {
-        var_dump($this->currentCommand);
-        exec($this->currentCommand, $output, $code);
+        $this->flag = 1;
+        exec($this->currentCommand, $this->output, $this->code);
         if ($code !== self::SUCCESS) {
             throw new Exception("Failed to exec command: {$this->currentCommand}; $output");
         }
@@ -39,8 +46,28 @@ class Shell implements ShellInterface
         if (!$this->allowCommands->commandExists($name)) {
             throw new Exception("The shell does't support $name command");
         }
+        if ($this->flag) {
+            $this->reset();
+        }
         $this->currentCommand = sprintf("%s %s %s", $this->currentCommand, $this->allowCommands->realCommand($name), $arguments[0] ?? "");
         return $this;
+    }
+
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    protected function reset()
+    {
+        $this->output = "";
+        $this->code = self::SUCCESS;
+        $this->flag = 0;
     }
 
 }

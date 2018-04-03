@@ -1,6 +1,8 @@
 <?php
 namespace SftpSync;
 
+use SftpSync\Shell;
+
 class SftpSync
 {
 
