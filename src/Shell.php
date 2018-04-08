@@ -4,6 +4,7 @@ namespace SftpSync;
 use SftpSync\Interfaces\ShellInterface;
 use SftpSync\Interfaces\CommandsInterface;
 use SftpSync\Commands;
+use Exception;
 
 class Shell implements ShellInterface
 {
@@ -34,11 +35,12 @@ class Shell implements ShellInterface
     {
         $this->flag = 1;
         exec($this->currentCommand, $this->output, $this->code);
-        if ($code !== self::SUCCESS) {
-            throw new Exception("Failed to exec command: {$this->currentCommand}; $output");
+        if ($this->code !== self::SUCCESS) {
+            throw new Exception("Failed to exec command [code={$this->code}]: {$this->currentCommand}; " . var_export($this->output, true));
         }
         $this->histroyCommands[] = $this->currentCommand;
         $this->currentCommand = "";
+        return $this;
     }
 
     public function __call($name, $arguments)
@@ -55,11 +57,17 @@ class Shell implements ShellInterface
 
     public function getOutput()
     {
+        if(!$this->flag) {
+            $this->run();
+        }
         return $this->output;
     }
 
     public function getCode()
     {
+        if(!$this->flag) {
+            $this->run();
+        }
         return $this->code;
     }
 

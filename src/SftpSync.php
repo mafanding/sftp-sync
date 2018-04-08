@@ -1,14 +1,21 @@
 <?php
 namespace SftpSync;
 
-use SftpSync\Shell;
+use SftpSync\Git\GitParse;
+use Exception;
 
 class SftpSync
 {
 
     public static function run()
     {
-        (new \SftpSync\Shell)->git("log")->pipe()->grep("php")->pipe()->wc("-l")->run();
+        try {
+            $list = GitParse::parse();
+            var_dump($list->getAll());
+        } catch (Exception $e) {
+            printf("%s\n", $e->getMessage());
+            exit(255);
+        }
     }
 
 }

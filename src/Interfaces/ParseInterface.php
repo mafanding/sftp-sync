@@ -4,6 +4,6 @@ namespace SftpSync\Interfaces;
 interface ParseInterface
 {
 
-    public static function parse();
+    public static function parse(ShellInterface $shell);
 
 }
