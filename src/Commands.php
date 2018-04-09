@@ -11,12 +11,10 @@ class Commands implements CommandsInterface
     public function __construct($extraCommands = [])
     {
         $this->commandTable = array_merge([
-            "which" => "which",
             "git" => "git",
             "sftp" => "sftp",
             "wc" => "wc",
             "pipe" => "|",
-            "grep" => "grep",
         ], $extraCommands);
     }
 
