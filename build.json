@@ -1,4 +1,5 @@
 {
+    "package_name": "sftp-sync",
     "entry_file": "main.php",
     "includes": [
         "src",
