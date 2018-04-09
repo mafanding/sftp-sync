@@ -1,0 +1,9 @@
+{
+    "entry_file": "main.php",
+    "includes": [
+        "src",
+        "vendor",
+        "main.php",
+        "composer.json"
+    ]
+}
