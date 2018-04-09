@@ -11,14 +11,13 @@ class Sftp
 
     public static function sync(ListInterface $list, ConfigureInterface $config, ShellInterface $shell = null)
     {
-        $files = $list->getAll();
-        if (empty($files)) {
+        if (empty($list->getAll())) {
             return true;
         }
         if (is_null($shell)) {
             $shell = new Shell();
         }
-        $re = static::composeBatchFile($files, $config);
+        $re = static::composeBatchFile($list, $config);
         if ($re === false) {
             throw new Exception("Failed to create batch file");
         }
@@ -32,14 +31,37 @@ class Sftp
         }
     }
 
-    protected static function composeBatchFile($files, $config)
+    protected static function composeBatchFile($list, $config)
     {
         $content = [];
         $content[] = sprintf("cd %s", $config->remoteDocumentRoot);
-        foreach ($files as $v) {
-            $content[] = sprintf("put %s %s", $config->localDocumentRoot . $v, $v);
-        }
+        $content = static::appendBatchContent($list->getModified(), $content, $config, "M");
+        $content = static::appendBatchContent($list->getNews(), $content, $config, "A");
+        $content = static::appendBatchContent($list->getUntracked(), $content, $config, "?");
+        $content = static::appendBatchContent($list->getDeleted(), $content, $config, "D");
         return file_put_contents($config->localDocumentRoot . $config->batchFile, implode(PHP_EOL, $content));
+    }
+
+    protected static function appendBatchContent($files, $content, $config, $action = "A")
+    {
+        if (empty($files)) {
+            return $content;
+        }
+        foreach ($files as $v) {
+            if (!in_array($v, $config->syncExcludes)) {
+                switch ($action) {
+                    case "A":
+                    case "M":
+                    case "?":
+                        $content[] = sprintf("put %s %s", $config->localDocumentRoot . $v, $v);
+                        break;
+                    case "D":
+                        $content[] = sprintf("rm %s", $v);
+                        break;
+                }
+            }
+        }
+        return $content;
     }
 
 }

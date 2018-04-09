@@ -34,7 +34,7 @@ class Configure implements ConfigureInterface
             "auto_commit" => false,
             "default_commit_message" => "Auto committed by sftp-sync tools",
             "remote_document_root" => "/",
-            "local_document_root" => getcwd(),
+            "local_document_root" => CURRENT_WORK_DIR,
             "remote_port" => 22,
             "remote_ip" => "127.0.0.1",
             "remote_user" => "root",
