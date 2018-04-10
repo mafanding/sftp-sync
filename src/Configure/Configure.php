@@ -1,5 +1,5 @@
 <?php
-namespace SftpSync;
+namespace SftpSync\Configure;
 
 use SftpSync\Interfaces\ConfigureInterface;
 
@@ -8,25 +8,25 @@ class Configure implements ConfigureInterface
 
     protected static $instance;
 
-    protected $autoCommit;
+    protected $autoCommit = false;
 
-    protected $defaultCommitMessage;
+    protected $defaultCommitMessage = "";
 
-    protected $syncExcludes;
+    protected $syncExcludes = [];
 
-    protected $commitExcludes;
+    protected $commitExcludes = [];
 
-    protected $remoteDocumentRoot;
+    protected $remoteDocumentRoot = "";
 
-    protected $localDocumentRoot;
+    protected $localDocumentRoot = "";
 
-    protected $batchFile;
+    protected $batchFile = "";
 
-    protected $remotePort;
+    protected $remotePort = 0;
 
-    protected $remoteIp;
+    protected $remoteIp = "";
 
-    protected $remoteUser;
+    protected $remoteUser = "";
 
     protected function __construct($userDefined)
     {
@@ -48,16 +48,7 @@ class Configure implements ConfigureInterface
             $userDefinedConfigs = json_decode(file_get_contents($userDefined), true);
         }
         $configs = array_merge($defaultConfigs, $userDefinedConfigs);
-        $this->autoCommit = $configs["auto_commit"];
-        $this->defaultCommitMessage = $configs["default_commit_message"];
-        $this->syncExcludes = $configs["sync_excludes"];
-        $this->commitExcludes = $configs["commit_excludes"];
-        $this->batchFile = $configs["batch_file"];
-        $this->remotePort = $configs["remote_port"];
-        $this->remoteIp = $configs["remote_ip"];
-        $this->remoteUser = $configs["remote_user"];
-        $this->remoteDocumentRoot = rtrim($configs["remote_document_root"], "/\\") . DIRECTORY_SEPARATOR;
-        $this->localDocumentRoot = rtrim($configs["local_document_root"], "/\\") . DIRECTORY_SEPARATOR;
+        $this->batchAssign($configs);
     }
 
     public static function load($userDefined = "")
@@ -73,4 +64,14 @@ class Configure implements ConfigureInterface
         return $this->$name ?? null;
     }
 
+    protected function batchAssign($configs)
+    {
+        foreach ($configs as $k => $v) {
+            $prop = lcfirst(str_replace(" ", "", ucwords(str_replace("_", " ", $k))));
+            if (isset($this->$prop)) {
+                $this->$prop = $v;
+            }
+        }
+    }
+    
 }

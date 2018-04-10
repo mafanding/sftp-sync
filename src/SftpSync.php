@@ -2,6 +2,8 @@
 namespace SftpSync;
 
 use SftpSync\Git\GitParse;
+use SftpSync\Sftp\Sftp;
+use SftpSync\Configure\Configure;
 use Exception;
 
 class SftpSync

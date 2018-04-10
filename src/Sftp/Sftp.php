@@ -1,9 +1,10 @@
 <?php
-namespace SftpSync;
+namespace SftpSync\Sftp;
 
 use SftpSync\Interfaces\ListInterface;
 use SftpSync\Interfaces\ShellInterface;
 use SftpSync\Interfaces\ConfigureInterface;
+use SftpSync\Shell;
 use Exception;
 
 class Sftp

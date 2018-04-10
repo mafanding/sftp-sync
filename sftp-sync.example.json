@@ -1,0 +1,7 @@
+{
+    "auto_commit": false,
+    "remote_port": 22,
+    "remote_user": "sftp_user",
+    "remote_document_root": "/",
+    "remote_ip": "127.0.0.1"
+}
