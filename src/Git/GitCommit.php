@@ -33,13 +33,13 @@ class GitCommit implements CommitInterface
 
     protected function add()
     {
-        $this->shell->git(sprintf("add %s", implode(" ", $this->list->getAll())));
+        $this->shell->git(sprintf("add %s", implode(" ", $this->list->getAll())))->run();
         return $this;
     }
 
     protected function commit()
     {
-        $this->shell->git(sprintf("commit -m '%s'", $this->config->defaultCommitMessage));
+        $this->shell->git(sprintf("commit -m '%s'", $this->config->defaultCommitMessage))->run();
         return $this;
     }
 
