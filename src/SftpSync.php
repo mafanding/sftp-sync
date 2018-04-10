@@ -27,7 +27,7 @@ class SftpSync
             $list = GitParse::parse();
             Sftp::sync($list, $configs);
             if (($configs->autoCommit || isset($opts["a"]) || isset($opts["auto-commit"])) && !empty($list->getAll())) {
-                $gitCommit = new GitCommit($list, $configs);
+                $gitCommit = new GitCommit($opts, $list, $configs);
                 $gitCommit->run();
             }
         } catch (Exception $e) {

@@ -15,12 +15,15 @@ class GitCommit implements CommitInterface
     protected $config;
 
     protected $list;
+    
+    protected $options;
 
     public function __construct($options, ListInterface $list, ConfigureInterface $config, ShellInterface $shell = null)
     {
         if (is_null($shell)) {
             $shell = new Shell;
         }
+        $this->options = $options;
         $this->shell = $shell;
         $this->list = $list;
         $this->config = $config;
@@ -39,7 +42,9 @@ class GitCommit implements CommitInterface
 
     protected function commit()
     {
-        $message = $options["message"] ?? ($options["m"] ?? $this->config->defaultCommitMessage);
+        $message = $this->options["message"] ?? ($this->options["m"] ?? $this->config->defaultCommitMessage);
+        var_dump($message);
+        exit;
         $this->shell->git(sprintf("commit -m '%s'", $message))->run();
         return $this;
     }
