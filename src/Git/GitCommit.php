@@ -43,8 +43,6 @@ class GitCommit implements CommitInterface
     protected function commit()
     {
         $message = $this->options["message"] ?? ($this->options["m"] ?? $this->config->defaultCommitMessage);
-        var_dump($message);
-        exit;
         $this->shell->git(sprintf("commit -m '%s'", $message))->run();
         return $this;
     }
