@@ -16,7 +16,7 @@ class GitCommit implements CommitInterface
 
     protected $list;
 
-    public function __construct(ListInterface $list, ConfigureInterface $config, ShellInterface $shell = null)
+    public function __construct($options, ListInterface $list, ConfigureInterface $config, ShellInterface $shell = null)
     {
         if (is_null($shell)) {
             $shell = new Shell;
@@ -39,7 +39,8 @@ class GitCommit implements CommitInterface
 
     protected function commit()
     {
-        $this->shell->git(sprintf("commit -m '%s'", $this->config->defaultCommitMessage))->run();
+        $message = $options["message"] ?? ($options["m"] ?? $this->config->defaultCommitMessage);
+        $this->shell->git(sprintf("commit -m '%s'", $message))->run();
         return $this;
     }
 
