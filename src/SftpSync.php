@@ -19,7 +19,10 @@ class SftpSync
             } elseif (isset($opts["v"]) || isset($opts["version"])) {
                 static::printVersion();
             }
-            $configFile = realpath($opts["conf"] ?? ($opts["c"] ?? null));
+            $configFile = $opts["conf"] ?? ($opts["c"] ?? null);
+            if (!is_null($configFile)) {
+                $configFile = realpath($configFile);
+            }
             $configs = Configure::load($configFile ? $configFile : DEFAULT_CONFIG_FILE);
             $list = GitParse::parse();
             Sftp::sync($list, $configs);
