@@ -32,7 +32,7 @@ class Configure implements ConfigureInterface
     {
         $defaultConfigs = [
             "auto_commit" => false,
-            "default_commit_message" => "Auto committed by sftp-sync tools",
+            "default_commit_message" => "Auto committed by sftp-sync tool",
             "remote_document_root" => "/",
             "local_document_root" => CURRENT_WORK_DIR,
             "remote_port" => 22,
@@ -42,6 +42,7 @@ class Configure implements ConfigureInterface
             "sync_excludes" => [],
             "commit_excludes" => [],
         ];
+        $userDefined = realpath($userDefined);
         if (empty($userDefined) || !file_exists($userDefined) || !is_readable($userDefined)) {
             $userDefinedConfigs = [];
         } else {
