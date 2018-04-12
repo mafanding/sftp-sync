@@ -25,10 +25,11 @@ class SftpSync
             }
             $configs = Configure::load($configFile ? $configFile : DEFAULT_CONFIG_FILE);
             $list = GitParse::parse();
-            Sftp::sync($list, $configs);
-            if (($configs->autoCommit || isset($opts["a"]) || isset($opts["auto-commit"])) && !empty($list->getAll())) {
-                $gitCommit = new GitCommit($opts, $list, $configs);
-                $gitCommit->run();
+            if (Sftp::sync($list, $configs)) {
+                if (($configs->autoCommit || isset($opts["a"]) || isset($opts["auto-commit"])) && !empty($list->getAll())) {
+                    $gitCommit = new GitCommit($opts, $list, $configs);
+                    $gitCommit->run();
+                }
             }
         } catch (Exception $e) {
             printf("%s\n", $e->getMessage());

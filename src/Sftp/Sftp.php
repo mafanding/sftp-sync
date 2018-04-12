@@ -30,6 +30,7 @@ class Sftp
         } finally {
             @unlink($config->localDocumentRoot . $config->batchFile);
         }
+        return true;
     }
 
     protected static function composeBatchFile($list, $config)
